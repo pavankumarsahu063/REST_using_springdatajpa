@@ -1,7 +1,9 @@
 package com.api.controller;
 
 import java.util.List;
+import java.util.Objects;
 
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,20 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.model.Student;
 import com.api.services.StudentServices;
 
+
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/student")
 public class StudentController {
 	
 	private StudentServices studentServices;
 	
+	
 
 	public StudentController(StudentServices studentServices) {
 		this.studentServices=studentServices;
 	}
 	
-	@GetMapping("/home")
-	public String home() {
+	@GetMapping("/login")
+	public String home(@RequestBody Student student) {
+		
+		var s=studentServices.studentLogin(student);
+		if(!Objects.isNull(s))
 		return "Home Page";
+		
+		
+		return "fail to login";
+	}
+	
+	@GetMapping("/getcsrf")
+	public CsrfToken getToken(HttpServletRequest request) {
+		return (CsrfToken) request.getAttribute("_csrf");
 	}
 	@PostMapping("/add")
 	public String addStudent(@RequestBody Student student) {

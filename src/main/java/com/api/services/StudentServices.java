@@ -54,4 +54,8 @@ public class StudentServices {
 		return null;
 		
 	}
+	
+	public Student studentLogin(Student student) {
+		return studentRepository.findByEmailAndPassword(student.getEmail(), student.getPassword());
+	}
 }

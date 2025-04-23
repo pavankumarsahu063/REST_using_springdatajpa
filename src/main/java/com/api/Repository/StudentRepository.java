@@ -7,6 +7,6 @@ import com.api.model.Student;
 public interface StudentRepository extends JpaRepository<Student, Integer>{
 	Student findByEmail(String email);
 	int deleteByEmail(String email);
-	
+	Student findByEmailAndPassword(String email,String password);
 
 }
